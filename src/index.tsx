@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Home from './pages/Home';
 import { createStore } from './utils/createStore';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
@@ -11,7 +11,7 @@ const startApp = () => {
   ReactDOM.render(
     <React.StrictMode>
       <Provider store={store}>
-        <App />
+        <Home />
       </Provider>
     </React.StrictMode>,
     document.getElementById('root')

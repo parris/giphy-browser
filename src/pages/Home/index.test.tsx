@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { createStore } from './utils/createStore';
-import App from './App';
+import { createStore } from '../../utils/createStore';
+import App from '.';
 
 test('renders learn react link', () => {
   const store = createStore();
