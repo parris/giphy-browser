@@ -12,12 +12,14 @@ export interface GifListState {
   offset: number,
   gifs: GiphyGif[];
   mode: string,
+  term: string,
 }
 
 const initialState: GifListState = {
   offset: 0,
   gifs: [],
   mode: 'trending',
+  term: '',
 };
 
 export const gifListSlice = createSlice({
@@ -47,11 +49,17 @@ export const gifListSlice = createSlice({
         ...state,
         offset: action.payload,
       };
-    }
+    },
+    setTerm: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        term: action.payload,
+      };
+    },
   },
 });
 
-const { appendGifs, replaceGifs, setMode, setOffset } = gifListSlice.actions;
+const { appendGifs, replaceGifs, setMode, setOffset, setTerm } = gifListSlice.actions;
 
 export interface GiphyImage {
   fixed_height: {
@@ -90,7 +98,7 @@ interface GiphyResponse {
 };
 
 export const fetchTrending = (withOffset = 0): AppThunk => dispatch => {
-  fetch(`https://api.giphy.com/v1/gifs/trending?api_key=${GIPHY_API_KEY}&rating=pg`)
+  fetch(`https://api.giphy.com/v1/gifs/trending?api_key=${GIPHY_API_KEY}&rating=pg&offset=${withOffset}`)
     .then((data: Response) => data.json())
     .then((response: GiphyResponse) => {
       if (withOffset === 0) {
@@ -99,7 +107,23 @@ export const fetchTrending = (withOffset = 0): AppThunk => dispatch => {
         dispatch(appendGifs(response.data));
       }
       dispatch(setMode('trending'));
-      dispatch(setOffset(withOffset));
+      dispatch(setTerm(''));
+      dispatch(setOffset(withOffset + response.pagination.count));
+    });
+};
+
+export const fetchSearch = (withOffset = 0, term = ''): AppThunk => dispatch => {
+  fetch(`https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${term}&rating=pg&offset=${withOffset}`)
+    .then((data: Response) => data.json())
+    .then((response: GiphyResponse) => {
+      if (withOffset === 0) {
+        dispatch(replaceGifs(response.data));
+      } else {
+        dispatch(appendGifs(response.data));
+      }
+      dispatch(setMode('search'));
+      dispatch(setTerm(term));
+      dispatch(setOffset(withOffset + response.pagination.count));
     });
 };
 
@@ -109,5 +133,6 @@ export const fetchTrending = (withOffset = 0): AppThunk => dispatch => {
 export const selectGifs = (state: RootState) => state.gifList.gifs;
 export const selectOffset = (state: RootState) => state.gifList.offset;
 export const selectMode = (state: RootState) => state.gifList.mode;
+export const selectTerm = (state: RootState) => state.gifList.term;
 
 export default gifListSlice.reducer;

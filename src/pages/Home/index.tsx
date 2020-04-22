@@ -6,7 +6,6 @@ import { GifList } from '../../features/giflist/GifList';
 function Home() {
   return (
     <div>
-      <span>The list</span>
       <GifList />
     </div>
   );
