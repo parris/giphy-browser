@@ -2,6 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import { Counter } from '../../features/counter/Counter';
 import './Home.css';
+import { Link } from 'react-router-dom';
+import { Button } from '@material-ui/core';
 
 function Home() {
   return (
@@ -49,6 +51,9 @@ function Home() {
           >
             React Redux
           </a>
+          <Button component={Link} to="/view/1">
+            Go To View Page
+          </Button>
         </span>
       </header>
     </div>
