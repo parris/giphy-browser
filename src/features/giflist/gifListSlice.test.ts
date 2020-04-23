@@ -10,6 +10,9 @@ const createGif = (str: String) => {
     images: {
       fixed_height: {
         url: str,
+      },
+      downsized_large: {
+        url: str,
       }
     }
   } as GiphyGif;

@@ -33,10 +33,12 @@ export const Gif: React.FC<GifProps> = ({ gif }) => {
   const classes = useGifStyles();
   // @ts-ignore
   const url = gif.images.fixed_height.url || '';
+  // @ts-ignore
+  const link = btoa(gif.images.downsized_large.url || '');
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Card className={classes.card}>
-        <Link to={`/view/${gif.slug}`}>
+        <Link to={`/view/${link}`}>
           <img className={classes.image} src={url} alt={gif.title} height="200px" />
         </Link>
       </Card>

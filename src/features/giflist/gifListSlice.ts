@@ -79,6 +79,9 @@ export interface GiphyGif {
     fixed_height: {
       url: string,
     },
+    downsized_large: {
+      url: string,
+    },
   },
 };
 interface GiphyPagination {
